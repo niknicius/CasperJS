@@ -22,7 +22,7 @@ function callSendApi(sender_psid, response){
             "id": sender_psid
         },
         "message": response
-    }
+    };
 
     request({
         "uri": "https://graph.facebook.com/v2.6/me/messages",
@@ -32,6 +32,7 @@ function callSendApi(sender_psid, response){
     }, (err, res, body) => {
         if (!err) {
             console.log('Mensagem Enviada!!')
+            console.log(res);
         } else {
             console.error("Erro ao enviar mensagem:" + err);
         }
