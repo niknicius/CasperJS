@@ -1,7 +1,15 @@
-const express = require("express"),  router = express.Router();
+const express = require("express"),  router = express.Router(), request = require("request");
 
 function handleMessage(sender_psid, received_message){
+    let response;
 
+    if(received_message.text){
+        response = {
+            "text" : `Você enviou "${received_message.text}" agora me envie uma imagem`
+        }
+    }
+
+    callSendApi(sender_psid, response);
 }
 
 function handlePostback(sender_psid, received_postback){
@@ -9,8 +17,28 @@ function handlePostback(sender_psid, received_postback){
 }
 
 function callSendApi(sender_psid, response){
+    let response_body = {
+        "recipient": {
+            "id": sender_psid
+        },
+        "message": response
+    }
 
+    request({
+        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        if (!err) {
+            console.log('Mensagem Enviada!!')
+        } else {
+            console.error("Erro ao enviar mensagem:" + err);
+        }
+    });
 }
+
+
 
 router.post('/', (req, res) => {
     let body = req.body;
@@ -23,6 +51,13 @@ router.post('/', (req, res) => {
 
             let sender_psid = webhook_event.sender.id;
             console.log('Sender PSID: ' + sender_psid);
+
+            if(webhook_event.message){
+                handleMessage(sender_psid, webhook_event.message);
+            }
+            else if(webhook_event.postback){
+                handlePostback(sender_psid, webhook_event.postback);
+            }
 
         });
 
