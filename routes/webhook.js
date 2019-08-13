@@ -17,7 +17,7 @@ function handlePostback(sender_psid, received_postback){
 }
 
 function callSendApi(sender_psid, response){
-    let response_body = {
+    let request_body = {
         "recipient": {
             "id": sender_psid
         },
