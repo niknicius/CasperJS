@@ -1,5 +1,17 @@
 const express = require("express"),  router = express.Router();
 
+function handleMessage(sender_psid, received_message){
+
+}
+
+function handlePostback(sender_psid, received_postback){
+
+}
+
+function callSendApi(sender_psid, response){
+
+}
+
 router.post('/', (req, res) => {
     let body = req.body;
 
@@ -8,6 +20,9 @@ router.post('/', (req, res) => {
 
             let webhook_event = entry.messaging[0];
             console.log(webhook_event);
+
+            let sender_psid = webhook_event.sender.id;
+            console.log('Sender PSID: ' + sender_psid);
 
         });
 
