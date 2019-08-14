@@ -1,12 +1,29 @@
 const express = require("express"),  router = express.Router(), request = require("request");
 
+function reply_themes(){
+    json = {
+        "text": "Escolha um tema:",
+        "quick_replies":[
+            {
+                "content_type":"text",
+                "title":"Esportes",
+                "payload":"<POSTBACK_PAYLOAD>"
+            },{
+                "content_type":"text",
+                "title":"Política",
+                "payload":"<POSTBACK_PAYLOAD>"
+            }
+        ]
+    }
+
+    return json;
+}
+
 function handleMessage(sender_psid, received_message){
     let response;
 
     if(received_message.text){
-        response = {
-            "text" : `Você enviou "${received_message.text}" agora me envie uma imagem`
-        }
+        response = reply_themes();
     }
 
     callSendApi(sender_psid, response);
