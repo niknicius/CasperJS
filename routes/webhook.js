@@ -1,5 +1,11 @@
 const express = require("express"),  router = express.Router(), request = require("request");
 
+themes = []
+
+function parse_msg(msg){
+    themes
+}
+
 function reply_themes(){
     json = {
         "text": "Escolha um tema:",
