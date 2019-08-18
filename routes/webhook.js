@@ -7,7 +7,8 @@ function parse_msg(msg){
     let index = themes.forEach(function(value){
         if(value === msg){
             let news = News.find({theme: new RegExp('^'+value+'$', "i")});
-            if(news.length === 0){
+            console.log(news);
+            if(!news){
                 console.log(msg);
                 return false;
             }else if(news.length <= 10){
