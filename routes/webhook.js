@@ -1,7 +1,5 @@
 const express = require("express"),  router = express.Router(), request = require("request");
 
-
-
 function parse_msg(msg){
     const themes = ['esportes', 'politica', 'entretenimento', 'famosos'];
     let index = themes.forEach(function(value){
@@ -45,10 +43,12 @@ function handleMessage(sender_psid, received_message){
 
     if(received_message.payload){
         response = parse_msg(received_message.payload);
+        console.log(response);
 
     }
     else if(received_message.text){
         response = reply_themes();
+        console.log('themes');
     }
 
     callSendApi(sender_psid, response);
@@ -84,7 +84,7 @@ function callSendApi(sender_psid, response){
 
 router.post('/', (req, res) => {
     let body = req.body;
-
+    console.log(body);
     if(body.object === 'page'){
         body.entry.forEach(function(entry){
 
@@ -105,7 +105,7 @@ router.post('/', (req, res) => {
         res.status(200).send('EVENT_RECEIVED');
     }
     else{
-        res.sendStatus(404);
+        res.sendStatus(402);
     }
 });
 
