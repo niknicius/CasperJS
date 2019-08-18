@@ -8,7 +8,7 @@ function parse_msg(msg){
         if(value === msg){
             News.find({theme: new RegExp('^'+value+'$', "i")}).then((news) => {
                 console.log(news);
-                if(news.length <= 10){
+                if(news.length <= 10 && news.length > 0){
                     let news_list = [];
                     news.forEach(function (n) {
                         let news_item = {
