@@ -77,6 +77,17 @@ function handleMessage(sender_psid, received_message){
             console.log(response);
             callSendApi(sender_psid, response);
             response = reply_themes();
+        }else{
+            response = {
+                attachment:{
+                    type: "template",
+                    payload: {
+                        template_type: "generic",
+                        elements: response
+                    }
+                }
+            };
+
         }
 
     }
