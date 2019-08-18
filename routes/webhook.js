@@ -97,6 +97,7 @@ function handleMessage(sender_psid, received_message){
         console.log('themes');
     }
 
+    console.log(response);
     callSendApi(sender_psid, response);
 }
 
