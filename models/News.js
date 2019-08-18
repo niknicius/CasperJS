@@ -5,8 +5,7 @@ const NewsSchema = new mongoose.Schema({
     description: String,
     theme: String,
     link: String,
-    img: String,
-    timestamps: { createdAt: 'created_at' }
+    img: String
 });
 
 module.exports = mongoose.model('News', NewsSchema);

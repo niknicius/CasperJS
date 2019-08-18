@@ -1,34 +1,52 @@
 const express = require("express"),  router = express.Router(), request = require("request");
 
-themes = []
+
 
 function parse_msg(msg){
-    themes
+    const themes = ['esportes', 'politica', 'entretenimento', 'famosos'];
+    let index = themes.forEach(function(value){
+        if(value === msg){
+            return value;
+        }
+    });
+
+    return index;
 }
 
 function reply_themes(){
-    json = {
+    return {
         "text": "Escolha um tema:",
-        "quick_replies":[
+        "quick_replies": [
             {
-                "content_type":"text",
-                "title":"Esportes",
-                "payload":"<POSTBACK_PAYLOAD>"
-            },{
-                "content_type":"text",
-                "title":"Política",
-                "payload":"<POSTBACK_PAYLOAD>"
-            }
+                "content_type": "text",
+                "title": "Esportes",
+                "payload": "esportes"
+            }, {
+                "content_type": "text",
+                "title": "Política",
+                "payload": "politica"
+            },
+            {
+                "content_type": "text",
+                "title": "Entretenimento",
+                "payload": "entretenimento"
+            },
+            {
+                "content_type": "text",
+                "title": "Famosos",
+                "payload": "famosos"
+            },
         ]
-    }
-
-    return json;
+    };
 }
 
 function handleMessage(sender_psid, received_message){
     let response;
 
-    if(received_message.text){
+    if(received_message.payload){
+        response = parse_msg(received_message.payload);
+    }
+    else if(received_message.text){
         response = reply_themes();
     }
 
@@ -55,7 +73,6 @@ function callSendApi(sender_psid, response){
     }, (err, res, body) => {
         if (!err) {
             console.log('Mensagem Enviada!!')
-            console.log(res);
         } else {
             console.error("Erro ao enviar mensagem:" + err);
         }
@@ -74,7 +91,6 @@ router.post('/', (req, res) => {
             console.log(webhook_event);
 
             let sender_psid = webhook_event.sender.id;
-            console.log('Sender PSID: ' + sender_psid);
 
             if(webhook_event.message){
                 handleMessage(sender_psid, webhook_event.message);

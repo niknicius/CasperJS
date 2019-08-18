@@ -1,6 +1,6 @@
 const crypto = require('crypto'), User = require('../models/User');
 
-const hash = crypto.randomBytes(16).toString('hex');
+const hash = require('../config/auth');
 
 function verifyHash(userHash){
     return userHash === hash;
@@ -23,7 +23,7 @@ module.exports = {
             }
         });
 
-        res.sendStatus(401);
+        //res.sendStatus(401);
     }
 
 };
