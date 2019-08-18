@@ -78,7 +78,7 @@ function handleMessage(sender_psid, received_message){
 
     if(received_message.quick_reply){
         response = parse_msg(received_message.quick_reply.payload);
-        if(response === false){
+        if(response === false || response === undefined){
             response = "Desculpe-me! Não existem notícias cadastradas para esse tema!";
             console.log(response);
             callSendApi(sender_psid, response);
