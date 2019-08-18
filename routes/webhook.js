@@ -45,6 +45,7 @@ function handleMessage(sender_psid, received_message){
 
     if(received_message.payload){
         response = parse_msg(received_message.payload);
+
     }
     else if(received_message.text){
         response = reply_themes();
