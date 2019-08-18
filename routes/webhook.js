@@ -1,10 +1,39 @@
 const express = require("express"),  router = express.Router(), request = require("request");
 
+const News = require('../models/News');
+
 function parse_msg(msg){
     const themes = ['esportes', 'politica', 'entretenimento', 'famosos'];
     let index = themes.forEach(function(value){
         if(value === msg){
-            return value;
+            let news = News.find({theme: new RegExp('^'+value+'$', "i")});
+            if(news.length === 0){
+                return false;
+            }else if(news.length <= 10){
+                let news_list = [];
+                news.forEach(function (n) {
+                    let news_item = {
+                        title: n.title,
+                        image_url: n.img,
+                        subtitle: n.description,
+                        default_action: {
+                            type: "web_url",
+                            url: "https://niknicius.tk/news/" + n.url,
+                            messenger_extensions: false
+                        },
+                        buttons: [
+                            {
+                                type: "web_url",
+                                url: "https://niknicius.tk/news/" + n.url,
+                                title: "Ler Notícia"
+                            }
+                        ]
+                    };
+                    news_list.push(news_item);
+                });
+                console.log("List content" + news_list);
+                return news_list;
+            }
         }
     });
 
@@ -42,9 +71,13 @@ function handleMessage(sender_psid, received_message){
     let response;
 
     if(received_message.quick_reply){
-        console.log(received_message.quick_reply);
-        response = parse_msg(received_message.quick_reply);
-        console.log(response);
+        response = parse_msg(received_message.quick_reply.payload);
+        if(response === false){
+            response = "Desculpe-me! Não existem notícias cadastradas para esse tema!";
+            console.log(response);
+            callSendApi(sender_psid, response);
+            response = reply_themes();
+        }
 
     }
     else if(received_message.text){
