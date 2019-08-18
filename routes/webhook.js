@@ -41,8 +41,8 @@ function reply_themes(){
 function handleMessage(sender_psid, received_message){
     let response;
 
-    if(received_message.payload){
-        response = parse_msg(received_message.payload);
+    if(received_message.quick_reply.payload){
+        response = parse_msg(received_message.quick_reply);
         console.log(response);
 
     }
