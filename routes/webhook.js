@@ -6,36 +6,37 @@ function parse_msg(msg){
     const themes = ['esportes', 'politica', 'entretenimento', 'famosos'];
     let index = themes.forEach(function(value){
         if(value === msg){
-            let news = News.find({theme: new RegExp('^'+value+'$', "i")});
-            console.log(news);
-            if(!news){
-                console.log(msg);
-                return false;
-            }else if(news.length <= 10){
-                let news_list = [];
-                news.forEach(function (n) {
-                    let news_item = {
-                        title: n.title,
-                        image_url: n.img,
-                        subtitle: n.description,
-                        default_action: {
-                            type: "web_url",
-                            url: "https://niknicius.tk/news/" + n.url,
-                            messenger_extensions: false
-                        },
-                        buttons: [
-                            {
+            News.find({theme: new RegExp('^'+value+'$', "i")}).then((news) => {
+                console.log(news);
+                if(news.length <= 10){
+                    let news_list = [];
+                    news.forEach(function (n) {
+                        let news_item = {
+                            title: n.title,
+                            image_url: n.img,
+                            subtitle: n.description,
+                            default_action: {
                                 type: "web_url",
                                 url: "https://niknicius.tk/news/" + n.url,
-                                title: "Ler Notícia"
-                            }
-                        ]
-                    };
-                    news_list.push(news_item);
-                });
-                console.log("List content" + news_list);
-                return news_list;
-            }
+                                messenger_extensions: false
+                            },
+                            buttons: [
+                                {
+                                    type: "web_url",
+                                    url: "https://niknicius.tk/news/" + n.url,
+                                    title: "Ler Notícia"
+                                }
+                            ]
+                        };
+                        news_list.push(news_item);
+                    });
+                    console.log("List content" + news_list);
+                    return news_list;
+                }
+            });
+
+            return false;
+
         }
     });
 
