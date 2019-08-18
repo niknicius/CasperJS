@@ -33,6 +33,9 @@ function parse_msg(msg){
                     console.log("List content" + news_list);
                     return news_list;
                 }
+                else{
+                    return false;
+                }
             });
 
             return false;
