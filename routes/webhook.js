@@ -2,9 +2,9 @@ const express = require("express"),  router = express.Router(), request = requir
 
 const News = require('../models/News');
 
- function parse_msg(msg){
+async function parse_msg(msg){
     const themes = ['esportes', 'politica', 'entretenimento', 'famosos'];
-    let index = themes.forEach(async function(value){
+    let index = await themes.forEach(async value => {
         if(value === msg){
              let newsA = await News.find({theme: new RegExp('^'+value+'$', "i")}).then((news) => {
                 console.log(news);
