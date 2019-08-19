@@ -14,6 +14,7 @@ router.get('/users/:username', UserController.find);
 
 // News' Controller
 router.post('/news', NewsController.store);
+router.get('/news', NewsController.index);
 router.get('/news/theme/:theme', NewsController.indexByTheme);
 
 

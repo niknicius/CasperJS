@@ -3,6 +3,17 @@ const News =  require('../models/News'), crypto = require('crypto');
 const hash = require('../config/auth');
 
 module.exports = {
+    async index(req, res) {
+        await News.find(function (err, data) {
+            if(err || data === null){
+                res.sendStatus(404);
+            }
+            else{
+                res.send(data);
+            }
+        });
+    },
+
     async indexByTheme(req, res){
         await News.find({theme: new RegExp('^'+req.params.theme+'$', "i")}, function(err, doc) {
             if (err || doc === null) {
