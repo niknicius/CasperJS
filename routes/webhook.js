@@ -3,7 +3,7 @@ const express = require("express"),  router = express.Router(), request = requir
 const News = require('../models/News');
 
 async function parse_msg(msg, sender_psid){
-    let newsA = await News.find({theme: new RegExp('^'+value+'$', "i")}).limit(20).then((news) => {
+    let newsA = await News.find({theme: new RegExp('^'+msg+'$', "i")}).limit(20).then((news) => {
         let newsList = [];
         news.forEach(function (n) {
             let news_item = {
