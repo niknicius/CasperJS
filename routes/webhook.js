@@ -6,7 +6,7 @@ const News = require('../models/News');
     const themes = ['esportes', 'politica', 'entretenimento', 'famosos'];
     let index = themes.forEach(async function(value){
         if(value === msg){
-            await News.find({theme: new RegExp('^'+value+'$', "i")}).then((news) => {
+             let newsA = await News.find({theme: new RegExp('^'+value+'$', "i")}).then((news) => {
                 console.log(news);
                 if(news.length <= 10 && news.length > 0){
                     let news_list = [];
@@ -38,7 +38,7 @@ const News = require('../models/News');
                 }
             });
 
-            return false;
+            return newsA;
 
         }
     });
