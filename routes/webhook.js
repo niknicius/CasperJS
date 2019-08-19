@@ -77,7 +77,7 @@ async function handleMessage(sender_psid, received_message){
     let response;
 
     if(received_message.quick_reply){
-        await response = parse_msg(received_message.quick_reply.payload);
+        let response = await parse_msg(received_message.quick_reply.payload);
         console.log("response" + response);
         if(response === false || response === undefined){
             response = {text: "Desculpe-me! Não existem notícias cadastradas para esse tema!"};
