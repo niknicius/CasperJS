@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://niknicius:t4C7*iVF*d6C@kamino.mongodb.umbler.com:41971/casper', {
+mongoose.connect('mongodb+srv://niknicius:preguicaPass15@casper-pua3q.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true,
 });
 
