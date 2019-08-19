@@ -92,6 +92,8 @@ function callSendApi(sender_psid, response){
         "message": response
     };
 
+    console.log("req_b" + request_body);
+
     request({
         "uri": "https://graph.facebook.com/v2.6/me/messages",
         "qs": { "access_token": "EAAiOpSlpuyQBAFLQM2ZArQlIuuEfBw4IlQ4ZBZAu2bjcw6VqhHWUVUZA5hn0QZC7xnmzfKffdpkAGsLXgi7YKNRR1EvLxZAah4KMm6KhJ2LJuOYlpZAiH93gXsqIvZBapOwIfO5Gx5ETzlSxlJQRCtLTxbQRLZCzgAkbDZCXyYuujCBgZDZD" },
