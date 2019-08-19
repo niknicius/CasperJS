@@ -33,7 +33,13 @@ async function parse_msg(msg, sender_psid){
             response = reply_themes();
             callSendApi(sender_psid, response);
         }else{
-            let response = newsList;
+            let response = {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: newsList
+                }
+            };
             console.log(response);
             callSendApi(sender_psid, response);
         }
