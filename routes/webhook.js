@@ -34,10 +34,12 @@ async function parse_msg(msg, sender_psid){
             callSendApi(sender_psid, response);
         }else{
             let response = {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: newsList
+                attachment: {
+                    type: "template",
+                    payload: {
+                        template_type: "generic",
+                        elements: newsList
+                    }
                 }
             };
             console.log(response);
