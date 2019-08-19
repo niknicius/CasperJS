@@ -1,4 +1,4 @@
-const express = require("express"), bodyParser = require('body-parser'), app = express().use(bodyParser.json());
+const express = require("express"), bodyParser = require('body-parser'), app = express().use(bodyParser.json()), cors = require('cors');
 const VERIFY_TOKEN = "AaTfMxOn6J";
 
 app.get('/', function (req, res) {
@@ -7,10 +7,11 @@ app.get('/', function (req, res) {
 
 const webhook = require('./routes/webhook.js'), api = require('./routes/api'), mongoose = require('./config/db');
 
-app.use('/webhook', webhook);
+app.use('/webhook', cors(), webhook);
 
-app.use('/api', api);
+app.use('/api', cors(), api);
 
+app.use(cors());
 
 const port = process.env.PORT || 3000;
 app.listen(port, function () {

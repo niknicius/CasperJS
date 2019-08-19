@@ -13,7 +13,7 @@ module.exports = {
     },
 
     async store(req, res) {
-        if (req.body.hash === hash) {
+        if (req.header("Authorization") === hash) {
             const {title, description, theme, img} = req.body;
             let link = crypto.randomBytes(16).toString('hex');
 

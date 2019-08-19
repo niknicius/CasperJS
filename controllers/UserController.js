@@ -19,7 +19,7 @@ module.exports = {
     },
 
     async find(req, res){
-        await User.findOne({username: new RegExp('^'+req.params.username+'$', "i")}, function(err, doc) {
+        await User.findOne({username: new RegExp('^'+req.params.username+'$', "i")}, { password : 0 }, function(err, doc) {
             if (err) {
                 res.sendStatus(404)
             }
