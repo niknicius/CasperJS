@@ -44,6 +44,21 @@ module.exports = {
         else{
             res.sendStatus(401);
         }
+    },
+    
+    async remove(req, res){
+        if (req.header("Authorization") === hash) {
+            News.findByIdAndDelete(req.params.id, function (err, data) {
+                if(err){
+                    res.sendStatus(404);
+                }else{
+                    res.sendStatus(200);
+                }
+            });
+        }
+        else{
+            res.sendStatus(401);
+        }
     }
 
 };

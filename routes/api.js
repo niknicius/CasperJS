@@ -16,7 +16,7 @@ router.get('/users/:username', UserController.find);
 router.post('/news', NewsController.store);
 router.get('/news', NewsController.index);
 router.get('/news/theme/:theme', NewsController.indexByTheme);
-
+router.delete('/news/:id', NewsController.remove);
 
 
 module.exports = router;
