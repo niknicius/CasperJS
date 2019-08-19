@@ -17,7 +17,7 @@ module.exports = {
             }
 
             if(doc != null && body.username === doc.username && body.password === doc.password){
-                res.send(hash);
+                res.send({"hash": hash});
             }else{
                 res.sendStatus(401);
             }

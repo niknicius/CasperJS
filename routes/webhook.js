@@ -12,13 +12,13 @@ async function parse_msg(msg, sender_psid){
                 subtitle: n.description,
                 default_action: {
                     type: "web_url",
-                    url: "https://niknicius.tk/news/" + n.url,
+                    url: "https://niknicius.tk/news/" + n.link,
                     messenger_extensions: false
                 },
                 buttons: [
                     {
                         type: "web_url",
-                        url: "https://niknicius.tk/news/" + n.url,
+                        url: "https://niknicius.tk/news/" + n.link,
                         title: "Ler Notícia"
                     }
                 ]
@@ -27,10 +27,7 @@ async function parse_msg(msg, sender_psid){
         });
 
         if(newsList.length === 0){
-            let response = {text: "Desculpe-me! Não existem notícias cadastradas para esse tema!"};
-            console.log(response);
-            callSendApi(sender_psid, response);
-            response = reply_themes();
+            response = reply_themes("Desculpe-me! Não existem notícias cadastradas para esse tema!");
             callSendApi(sender_psid, response);
         }else{
             let response = {
@@ -48,9 +45,9 @@ async function parse_msg(msg, sender_psid){
     });
 }
 
-function reply_themes(){
+function reply_themes(msg){
     return {
-        "text": "Escolha um tema:",
+        "text": msg,
         "quick_replies": [
             {
                 "content_type": "text",
@@ -82,8 +79,7 @@ async function handleMessage(sender_psid, received_message){
         await parse_msg(received_message.quick_reply.payload, sender_psid);
     }
     else if(received_message.text){
-        response = reply_themes();
-        console.log('themes');
+        response = reply_themes("Olá, Selecione um tema para ficar sabendo das novidades:");
         callSendApi(sender_psid, response);
     }
 }
