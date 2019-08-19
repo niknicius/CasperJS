@@ -2,11 +2,11 @@ const express = require("express"),  router = express.Router(), request = requir
 
 const News = require('../models/News');
 
-function parse_msg(msg){
+ function parse_msg(msg){
     const themes = ['esportes', 'politica', 'entretenimento', 'famosos'];
-    let index = themes.forEach(function(value){
+    let index = themes.forEach(async function(value){
         if(value === msg){
-            News.find({theme: new RegExp('^'+value+'$', "i")}).then((news) => {
+            await News.find({theme: new RegExp('^'+value+'$', "i")}).then((news) => {
                 console.log(news);
                 if(news.length <= 10 && news.length > 0){
                     let news_list = [];
