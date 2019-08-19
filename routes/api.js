@@ -5,7 +5,7 @@ const express = require('express'), router = express.Router(), crypto = require(
 const UserController = require('../controllers/UserController'), AuthController = require('../controllers/AuthController'), NewsController = require('../controllers/NewsController');
 
 // Login Controller
-router.get('/login', AuthController.login);
+router.post('/login', AuthController.login);
 
 // User's routes
 router.post('/users', UserController.store);
