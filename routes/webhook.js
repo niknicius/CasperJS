@@ -2,48 +2,42 @@ const express = require("express"),  router = express.Router(), request = requir
 
 const News = require('../models/News');
 
-async function parse_msg(msg){
-    const themes = ['esportes', 'politica', 'entretenimento', 'famosos'];
-    let index = await themes.forEach(async value => {
-        if(value === msg){
-             let newsA = await News.find({theme: new RegExp('^'+value+'$', "i")}).then((news) => {
-                console.log(news);
-                if(news.length <= 10 && news.length > 0){
-                    let news_list = [];
-                    news.forEach(function (n) {
-                        let news_item = {
-                            title: n.title,
-                            image_url: n.img,
-                            subtitle: n.description,
-                            default_action: {
-                                type: "web_url",
-                                url: "https://niknicius.tk/news/" + n.url,
-                                messenger_extensions: false
-                            },
-                            buttons: [
-                                {
-                                    type: "web_url",
-                                    url: "https://niknicius.tk/news/" + n.url,
-                                    title: "Ler Notícia"
-                                }
-                            ]
-                        };
-                        news_list.push(news_item);
-                    });
-                    console.log("List content" + news_list);
-                    return news_list;
-                }
-                else{
-                    return false;
-                }
-            });
+async function parse_msg(msg, sender_psid){
+    let newsA = await News.find({theme: new RegExp('^'+value+'$', "i")}).limit(20).then((news) => {
+        let newsList = [];
+        news.forEach(function (n) {
+            let news_item = {
+                title: n.title,
+                image_url: n.img,
+                subtitle: n.description,
+                default_action: {
+                    type: "web_url",
+                    url: "https://niknicius.tk/news/" + n.url,
+                    messenger_extensions: false
+                },
+                buttons: [
+                    {
+                        type: "web_url",
+                        url: "https://niknicius.tk/news/" + n.url,
+                        title: "Ler Notícia"
+                    }
+                ]
+            };
+            newsList.push(news_item);
+        });
 
-            return newsA;
-
+        if(newsList.length === 0){
+            let response = {text: "Desculpe-me! Não existem notícias cadastradas para esse tema!"};
+            console.log(response);
+            callSendApi(sender_psid, response);
+            response = reply_themes();
+            callSendApi(sender_psid, response);
+        }else{
+            let response = newsList;
+            console.log(response);
+            callSendApi(sender_psid, response);
         }
     });
-
-    return index;
 }
 
 function reply_themes(){
@@ -77,34 +71,13 @@ async function handleMessage(sender_psid, received_message){
     let response;
 
     if(received_message.quick_reply){
-        let response = await parse_msg(received_message.quick_reply.payload);
-        console.log("response" + response);
-        if(response === false || response === undefined){
-            response = {text: "Desculpe-me! Não existem notícias cadastradas para esse tema!"};
-            console.log(response);
-            callSendApi(sender_psid, response);
-            response = reply_themes();
-        }else{
-            response = {
-                attachment:{
-                    type: "template",
-                    payload: {
-                        template_type: "generic",
-                        elements: response
-                    }
-                }
-            };
-
-        }
-
+        await parse_msg(received_message.quick_reply.payload, sender_psid);
     }
     else if(received_message.text){
         response = reply_themes();
         console.log('themes');
+        callSendApi(sender_psid, response);
     }
-
-    console.log(response);
-    callSendApi(sender_psid, response);
 }
 
 function handlePostback(sender_psid, received_postback){
@@ -137,12 +110,12 @@ function callSendApi(sender_psid, response){
 
 router.post('/', (req, res) => {
     let body = req.body;
-    console.log(body);
+    //console.log(body);
     if(body.object === 'page'){
         body.entry.forEach(function(entry){
 
             let webhook_event = entry.messaging[0];
-            console.log(webhook_event);
+            //console.log(webhook_event);
 
             let sender_psid = webhook_event.sender.id;
 
