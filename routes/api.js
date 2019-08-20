@@ -12,11 +12,12 @@ router.post('/users', UserController.store);
 router.get('/users', UserController.index);
 router.get('/users/:username', UserController.find);
 
-// News' Controller
+// News' Routers
 router.post('/news', NewsController.store);
 router.get('/news', NewsController.index);
 router.get('/news/theme/:theme', NewsController.indexByTheme);
 router.delete('/news/:id', NewsController.remove);
+router.put('/news/:id', NewsController.update);
 
 
 module.exports = router;

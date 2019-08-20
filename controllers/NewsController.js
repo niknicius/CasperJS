@@ -26,6 +26,7 @@ module.exports = {
     async store(req, res) {
         if (req.header("Authorization") === hash) {
             const {title, description, theme, img} = req.body;
+            console.log(req.body);
             let link = crypto.randomBytes(16).toString('hex');
 
             const news = await News.create({
@@ -48,16 +49,22 @@ module.exports = {
     
     async remove(req, res){
         if (req.header("Authorization") === hash) {
-            News.findByIdAndDelete(req.params.id, function (err, data) {
-                if(err){
-                    res.sendStatus(404);
-                }else{
-                    res.sendStatus(200);
-                }
+            await News.findByIdAndDelete(req.params.id, function (err, data) {
+                if(err) return res.sendStatus(500).send(err);
+                return res.sendStatus(200);
             });
         }
         else{
             res.sendStatus(401);
+        }
+    },
+
+    async update(req, res){
+        if (req.header("Authorization") === hash) {
+            await News.findOneAndUpdate(req.params.id, req.body, {new: true}, (err, f) => {
+                if(err) return res.sendStatus(500).send(err);
+                return res.sendStatus(200);
+            })
         }
     }
 
