@@ -14,6 +14,18 @@ module.exports = {
         });
     },
 
+    async indexById(req, res) {
+        await News.findById(req.params.id,function (err, data) {
+            if(err || data === null){
+                res.sendStatus(404);
+            }
+            else{
+                res.send(data);
+            }
+        });
+    },
+
+
     async indexByTheme(req, res){
         await News.find({theme: new RegExp('^'+req.params.theme+'$', "i")}, function(err, doc) {
             if (err || doc === null) {
